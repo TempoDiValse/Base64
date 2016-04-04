@@ -1,6 +1,4 @@
-#include "stdafx.h"
-
-#include "base64.h">
+#include "base64.h"
 
 const char enc_table[] = { 'A', 'B', 'C', 'D', 'E', 'F', 'G',
 							'H', 'I', 'J', 'K', 'L', 'M', 'N',
@@ -39,39 +37,39 @@ char* base64_encode(const char *plain) {
 	int remain_size = len - bs;
 	char buffer[MAX_SIZE];
 
-	// ¹®ÀÚ¿­¿¡¼­ 3´Ü¾î¾¿ ²÷¾î¼­ Ã³¸®¸¦ ÇÑ´Ù. 
+	// ë¬¸ìžì—´ì—ì„œ 3ë‹¨ì–´ì”© ëŠì–´ì„œ ì²˜ë¦¬ë¥¼ í•œë‹¤. 
 	for (; i < bs; i += 3) {
-		// 3´Ü¾î¸¦ ºñÆ®¿¬»êÀ¸·Î 4´Ü¾î·Î ÂÉ°µ´Ù. (8bit¸¦ 6ºñÆ®·Î ¸¸µç´Ù.)
+		// 3ë‹¨ì–´ë¥¼ ë¹„íŠ¸ì—°ì‚°ìœ¼ë¡œ 4ë‹¨ì–´ë¡œ ìª¼ê° ë‹¤. (8bitë¥¼ 6ë¹„íŠ¸ë¡œ ë§Œë“ ë‹¤.)
 
-		// Ã¹¹øÂ° ´Ü¾î¿¡¼­ 2Ä­À» ¿À¸¥ÂÊÀ¸·Î ¶¯±â°í, AND ¿¬»êÀ¸·Î 0x3f´Â 2^6ÀÌ´Ï 6ÀÚ¸®¸¦ Á¦¿ÜÇÑ ³ª¸ÓÁö´Â 0À¸·Î ¸¸µé¾î Ã¹¹øÂ° ´Ü¾î¸¦ °¡Á®¿È.
-		// ¹öÆÛ¿¡ ÇÑ ´Ü¾î ¿Ï¼º
+		// ì²«ë²ˆì§¸ ë‹¨ì–´ì—ì„œ 2ì¹¸ì„ ì˜¤ë¥¸ìª½ìœ¼ë¡œ ë•¡ê¸°ê³ , AND ì—°ì‚°ìœ¼ë¡œ 0x3fëŠ” 2^6ì´ë‹ˆ 6ìžë¦¬ë¥¼ ì œì™¸í•œ ë‚˜ë¨¸ì§€ëŠ” 0ìœ¼ë¡œ ë§Œë“¤ì–´ ì²«ë²ˆì§¸ ë‹¨ì–´ë¥¼ ê°€ì ¸ì˜´.
+		// ë²„í¼ì— í•œ ë‹¨ì–´ ì™„ì„±
 		buffer[j++] = enc_table[(plain[i] >> 2) & 0x3f]; 
 
-		// Ã¹¹øÂ° ´Ü¾î¿¡¼­ ¹ö·ÁÁø ³ª¸ÓÁö 2°³¸¦ 2^2¿Í AND ¿¬»êÀ¸·Î °É·¯³»¼­ ¿ÞÂÊÀ¸·Î 4Ä­ ¹Ð¾î °ø°£À» ¸¸µç ´ÙÀ½¿¡ µÎ¹øÂ° ´Ü¾îÀÇ 4ÀÚ¸®¸£ °¡Á®¿Â´Ù. ¶È°°ÀÌ 2^4ÀÌ´Ï 4ÀÚ¸®¸¦ 0À¸·Î Æ÷¸Ë
-		// ¹öÆÛ¿¡ µÎ ´Ü¾î ¿Ï¼º
+		// ì²«ë²ˆì§¸ ë‹¨ì–´ì—ì„œ ë²„ë ¤ì§„ ë‚˜ë¨¸ì§€ 2ê°œë¥¼ 2^2ì™€ AND ì—°ì‚°ìœ¼ë¡œ ê±¸ëŸ¬ë‚´ì„œ ì™¼ìª½ìœ¼ë¡œ 4ì¹¸ ë°€ì–´ ê³µê°„ì„ ë§Œë“  ë‹¤ìŒì— ë‘ë²ˆì§¸ ë‹¨ì–´ì˜ 4ìžë¦¬ë¥´ ê°€ì ¸ì˜¨ë‹¤. ë˜‘ê°™ì´ 2^4ì´ë‹ˆ 4ìžë¦¬ë¥¼ 0ìœ¼ë¡œ í¬ë§·
+		// ë²„í¼ì— ë‘ ë‹¨ì–´ ì™„ì„±
 		buffer[j++] = enc_table[((plain[i] & 0x03) << 4) + ((plain[i+1] >> 4) & 0x0f)];
 
-		// µÎ¹øÂ° ´Ü¾î¿¡¼­ ¹ö·ÁÁø ³ª¸ÓÁö 4°³ÀÇ °ªÀ» °¡Á®¿Í ¾ÕÀ¸·Î 2°£ ¹Ð¾îÁÖ°í ¼¼¹øÂ° ´Ü¾îÀÇ ¾ÕÀÇ 2ÀÚ¸®¸¦ °¡Á®¿Â´Ù.
-		//¹öÆÛ¿¡ ¼¼ ´Ü¾î ¿Ï¼º
+		// ë‘ë²ˆì§¸ ë‹¨ì–´ì—ì„œ ë²„ë ¤ì§„ ë‚˜ë¨¸ì§€ 4ê°œì˜ ê°’ì„ ê°€ì ¸ì™€ ì•žìœ¼ë¡œ 2ê°„ ë°€ì–´ì£¼ê³  ì„¸ë²ˆì§¸ ë‹¨ì–´ì˜ ì•žì˜ 2ìžë¦¬ë¥¼ ê°€ì ¸ì˜¨ë‹¤.
+		//ë²„í¼ì— ì„¸ ë‹¨ì–´ ì™„ì„±
 		buffer[j++] = enc_table[((plain[i+1] & 0x0f) << 2) + ((plain[i+2] >> 6) & 0x03)];
 
-		// ³ª¸ÓÁö Âî²ô·¹±âµéÀº ³×¹øÂ° ´Ü¾î°¡ µÈ´Ù.
+		// ë‚˜ë¨¸ì§€ ì°Œë„ë ˆê¸°ë“¤ì€ ë„¤ë²ˆì§¸ ë‹¨ì–´ê°€ ëœë‹¤.
 		buffer[j++] = enc_table[plain[i+2] & 0x3f];
 	}
 
-	//¹Ýº¹ÇÏ´Ù°¡ ºñÆ®¼ö°¡ ³²À¸¸é
+	//ë°˜ë³µí•˜ë‹¤ê°€ ë¹„íŠ¸ìˆ˜ê°€ ë‚¨ìœ¼ë©´
 	if (remain_size != 0) {
 		buffer[j++] = enc_table[plain[i] >> 2 & 0x3f];
 
-		if (len - i == 2) { // 2 ¹ÙÀÌÆ®°¡ ³²À¸¸é
+		if (len - i == 2) { // 2 ë°”ì´íŠ¸ê°€ ë‚¨ìœ¼ë©´
 			buffer[j++] = enc_table[((plain[i] & 0x03) << 4) + ((plain[i + 1] >> 4) & 0x0f)];
 			buffer[j++] = enc_table[(plain[i + 1] & 0x0f) << 2];
-		}else { // 1 ¹ÙÀÌÆ®°¡ ³²À¸¸é
+		}else { // 1 ë°”ì´íŠ¸ê°€ ë‚¨ìœ¼ë©´
 			buffer[j++] = enc_table[(plain[i] & 0x03) << 4];
 			buffer[j++] = enc_table[PADDING];
 		}
 
-		// ¶È°°ÀÌ ÇÑ¹ø ´õ Ã³¸®ÇÏ°í ½ÌÅ©¸¦ ¸ÂÃß±â À§ÇØ PADDING '='À» ºÙ¿©ÁØ´Ù.
+		// ë˜‘ê°™ì´ í•œë²ˆ ë” ì²˜ë¦¬í•˜ê³  ì‹±í¬ë¥¼ ë§žì¶”ê¸° ìœ„í•´ PADDING '='ì„ ë¶™ì—¬ì¤€ë‹¤.
 		buffer[j++] = enc_table[PADDING];
 	}
 
@@ -92,17 +90,17 @@ char* base64_decode(const char *encoded) {
 
 	char buffer[MAX_SIZE];
 	
-	// ¹Ý´ë·Î µðÄÚµùÇÏ±â À§ÇØ¼­ 4ÀÚ¸®¾¿ Ã³¸®ÇÑ´Ù.
-	// ÇöÀç 6bit »óÅÂÀÌ´Ù
+	// ë°˜ëŒ€ë¡œ ë””ì½”ë”©í•˜ê¸° ìœ„í•´ì„œ 4ìžë¦¬ì”© ì²˜ë¦¬í•œë‹¤.
+	// í˜„ìž¬ 6bit ìƒíƒœì´ë‹¤
 	for (; i < len; i+=4) {
-		// µðÄÚµù Å×ÀÌºí¿¡¼­ ÀÎÄÚµùµÈ ´Ü¾îµé°ú ¸ÅÄªµÇ´Â °ªÀ» °¡Á®¿À°í
+		// ë””ì½”ë”© í…Œì´ë¸”ì—ì„œ ì¸ì½”ë”©ëœ ë‹¨ì–´ë“¤ê³¼ ë§¤ì¹­ë˜ëŠ” ê°’ì„ ê°€ì ¸ì˜¤ê³ 
 		int c0 = dec_table[encoded[i]];
 		int c1 = dec_table[encoded[i+1]];
 		int c2 = dec_table[encoded[i+2]];
 		int c3 = dec_table[encoded[i+3]];
 		
-		// ¿ø·¡ (8bit) ´ë·Î ¸¸µé¾îÁØ´Ù.
-		// ÀÎÄÚµù°ú °Å²Ù·Î µÈ°Å´Ù.
+		// ì›ëž˜ (8bit) ëŒ€ë¡œ ë§Œë“¤ì–´ì¤€ë‹¤.
+		// ì¸ì½”ë”©ê³¼ ê±°ê¾¸ë¡œ ëœê±°ë‹¤.
 		buffer[j++] = (c0 << 2) | (c1 >> 4);
 		buffer[j++] = (c1 << 4) | (c2 >> 2);
 		buffer[j++] = (c2 << 6) | c3;
